@@ -1,0 +1,7 @@
+{
+  "port": "8787",
+  "mongo_db": {
+    "addr": "mongodb://localhost:27017",
+    "database": "practice_mongodb"
+  }
+}

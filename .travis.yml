@@ -1,0 +1,16 @@
+language: go
+
+go:
+  - 1.13
+  - tip
+
+before_install:
+   - go get github.com/mattn/goveralls
+   - go get golang.org/x/tools/cmd/cover
+   - go get gopkg.in/go-playground/validator.v10
+   - sudo mkdir -p /home/travis/gopath/src/github.com/moemoe89/practicing-mongodb-golang/vendor/github.com/go-playground/validator/v10
+   - sudo cp -rf /home/travis/gopath/src/gopkg.in/go-playground/validator.v10/* /home/travis/gopath/src/github.com/moemoe89/practicing-mongodb-golang/vendor/github.com/go-playground/validator/v10
+   - sudo cp config-sample.json config.json
+
+script:
+   - goveralls -service=travis-ci

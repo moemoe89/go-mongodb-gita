@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/go/src/practicing-mongodb-golang
+    container_name: practicing_mongodb_golang
+    restart: always
+    ports:
+      - "8787:8787"
+    tty: true
+    depends_on:
+      - mongodb
+    networks:
+      - fullstack
+  mongodb:
+    image: mongo:latest
+    container_name: golang_mongodb
+    environment:
+      MONGO_INITDB_DATABASE: practice_mongodb
+    restart: always
+    ports:
+      - "27016:27017"
+    tty: true
+    networks:
+      - fullstack
+networks:
+  fullstack:
+    driver: bridge

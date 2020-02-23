@@ -1,31 +1,36 @@
+//
+//  Practicing MongoDB
+//
+//  Copyright © 2016. All rights reserved.
+//
+
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/itsjamie/gin-cors"
-	"practicing-mongodb-golang/controllers"
-	"time"
+	ap "github.com/moemoe89/practicing-mongodb-golang/api"
+	conf "github.com/moemoe89/practicing-mongodb-golang/config"
+	"github.com/moemoe89/practicing-mongodb-golang/routers"
+
+	"fmt"
+
+	"github.com/DeanThompson/ginpprof"
 )
 
 func main() {
-	r := gin.Default()
+	client, err := conf.InitDB()
+	if err != nil {
+		panic(err)
+	}
 
-	r.Use(cors.Middleware(cors.Config{
-		Origins:        "*",
-		Methods:        "GET, PUT, POST, DELETE",
-		RequestHeaders: "Origin, Authorization, Content-Type",
-		ExposedHeaders: "",
-		MaxAge: 50 * time.Second,
-		Credentials: true,
-		ValidateHeaders: false,
-	}))
+	log := conf.InitLog()
 
-	r.GET("/ping",controllers.Ping)
-	r.GET("/user",controllers.UserGet)
-	r.POST("/user",controllers.UserAdd)
-	r.GET("/user/:id",controllers.UserDetail)
-	r.PUT("/user/:id",controllers.UserEdit)
-	r.DELETE("/user/:id",controllers.UserDelete)
+	repo := ap.NewMongoDBRepository(client)
+	svc := ap.NewService(log, repo)
 
-	r.Run()
+	app := routers.GetRouter(log, svc)
+	ginpprof.Wrap(app)
+	err = app.Run(":" + conf.Configuration.Port)
+	if err != nil {
+		panic(fmt.Sprintf("Can't start the app: %s", err.Error()))
+	}
 }
