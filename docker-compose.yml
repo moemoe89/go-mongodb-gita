@@ -3,8 +3,8 @@ services:
   app:
     build: .
     volumes:
-      - .:/go/src/practicing-mongodb-golang
-    container_name: practicing_mongodb_golang
+      - .:/go/src/github.com/moemoe89/practicing-mongodb-golang
+    container_name: practice_mongodb_app
     restart: always
     ports:
       - "8787:8787"
@@ -15,7 +15,7 @@ services:
       - fullstack
   mongodb:
     image: mongo:latest
-    container_name: golang_mongodb
+    container_name: practice_mongodb_db
     environment:
       MONGO_INITDB_DATABASE: practice_mongodb
     restart: always
