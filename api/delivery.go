@@ -1,5 +1,5 @@
 //
-//  Practicing Redis
+//  Practicing MongoDB
 //
 //  Copyright © 2016. All rights reserved.
 //
@@ -8,8 +8,8 @@ package api
 
 import (
 	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/form"
-	"github.com/moemoe89/practicing-redis-golang/api/api_struct/model"
-	cons "github.com/moemoe89/practicing-redis-golang/constant"
+	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/model"
+	cons "github.com/moemoe89/practicing-mongodb-golang/constant"
 
 	"net/http"
 

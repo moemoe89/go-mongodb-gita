@@ -64,18 +64,6 @@
 			"revisionTime": "2020-01-28T10:39:42Z"
 		},
 		{
-			"checksumSHA1": "aun6dhG89fVom9uShq3DmFbDVKY=",
-			"path": "github.com/moemoe89/practicing-redis-golang/api/api_struct/model",
-			"revision": "24c4f3fe657fbc7c3feca1db8166b41f1dcd46a0",
-			"revisionTime": "2020-02-22T10:15:22Z"
-		},
-		{
-			"checksumSHA1": "HV4v9+gv5EAGMs0i1uC6mDy5Ltk=",
-			"path": "github.com/moemoe89/practicing-redis-golang/constant",
-			"revision": "24c4f3fe657fbc7c3feca1db8166b41f1dcd46a0",
-			"revisionTime": "2020-02-22T10:15:22Z"
-		},
-		{
 			"checksumSHA1": "zKKp5SZ3d3ycKe4EKMNT0BqAWBw=",
 			"origin": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
 			"path": "github.com/pmezard/go-difflib/difflib",
