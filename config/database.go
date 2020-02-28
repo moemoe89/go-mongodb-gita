@@ -7,19 +7,21 @@
 package config
 
 import (
+	"context"
 	"fmt"
 
-	"gopkg.in/mgo.v2"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // InitDB will create a variable that represent the redis.Client
-func InitDB() (*mgo.Session, error) {
-	mongoDBSession, err := mgo.Dial(Configuration.MongoDB.Addr)
+func InitDB() (*mongo.Client, error) {
+	ctx := context.Background()
+	clientOpts := options.Client().ApplyURI(Configuration.MongoDB.Addr)
+	client, err := mongo.Connect(ctx, clientOpts)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to ping connection to mongoDB: %s", err.Error())
 	}
 
-	mongoDBSession.SetSafe(&mgo.Safe{})
-
-	return mongoDBSession, nil
+	return client, nil
 }

@@ -1,5 +1,5 @@
 {
-  "port": "8787",
+  "port": "8786",
   "mongo_db": {
     "addr": "mongodb://localhost:27017",
     "database": "practice_mongodb"

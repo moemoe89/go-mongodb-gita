@@ -7,7 +7,7 @@ services:
     container_name: practice_mongodb_app
     restart: always
     ports:
-      - "8787:8787"
+      - "8786:8786"
     tty: true
     depends_on:
       - mongodb

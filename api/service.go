@@ -15,8 +15,8 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"gopkg.in/mgo.v2/bson"
-	"gopkg.in/mgo.v2"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Service represent the services
@@ -40,7 +40,7 @@ func NewService(log *logrus.Entry, r Repository) Service {
 
 func (s *implService) Create(req *form.UserForm) (*model.UserModel, int, error) {
 	user := &model.UserModel{
-		ID:        bson.NewObjectId(),
+		ID:        primitive.NewObjectID(),
 		Name:      req.Name,
 		Gender:    req.Gender,
 		Age:       req.Age,
@@ -68,7 +68,7 @@ func (s *implService) Find() ([]*model.UserModel, int, error) {
 
 func (s *implService) FindByID(id string) (*model.UserModel, int, error) {
 	user, err := s.repository.FindByID(id)
-	if err == mgo.ErrNotFound {
+	if err == mongo.ErrNoDocuments {
 		return nil, http.StatusNotFound, errors.New("Data not found")
 	}
 

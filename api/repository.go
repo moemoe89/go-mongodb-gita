@@ -9,8 +9,11 @@ package api
 import (
 	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/model"
 
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"context"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const (
@@ -28,61 +31,57 @@ type Repository interface {
 }
 
 type mongoDBRepository struct {
-	MongoDBSession *mgo.Session
+	Client *mongo.Client
 }
 
 // NewRedisRepository will create an object that represent the Repository interface
-func NewMongoDBRepository(MongoDBSession *mgo.Session) Repository {
-	return &mongoDBRepository{MongoDBSession}
+func NewMongoDBRepository(Client *mongo.Client) Repository {
+	return &mongoDBRepository{Client}
 }
 
 func (m *mongoDBRepository) Create(user *model.UserModel) (*model.UserModel, error) {
-	sess := m.MongoDBSession.Copy()
-	defer sess.Close()
-
-	c := sess.DB(DB_NAME).C(USER_COLLECTION)
-	err := c.Insert(&user)
-
+	collection := m.Client.Database(DB_NAME).Collection(USER_COLLECTION)
+	_, err := collection.InsertOne(context.TODO(), user)
 	return user, err
 }
 
 func (m *mongoDBRepository) Find() ([]*model.UserModel, error) {
-	sess := m.MongoDBSession.Copy()
-	defer sess.Close()
-
-	c := sess.DB(DB_NAME).C(USER_COLLECTION)
 	users := []*model.UserModel{}
-	err := c.Find(bson.M{}).All(&users)
+	collection := m.Client.Database(DB_NAME).Collection(USER_COLLECTION)
+	cursor, err := collection.Find(context.TODO(), bson.M{})
+	if err != nil {
+		return nil, err
+	}
 
+	for cursor.Next(context.TODO()) {
+		user := model.UserModel{}
+		cursor.Decode(&user)
+		users = append(users, &user)
+	}
+	cursor.Close(context.TODO())
 	return users, err
 }
 
 func (m *mongoDBRepository) FindByID(id string) (*model.UserModel, error) {
-	sess := m.MongoDBSession.Copy()
-	defer sess.Close()
-
 	user := &model.UserModel{}
-	c := sess.DB(DB_NAME).C(USER_COLLECTION)
-	err := c.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&user)
-
+	objectID, _ := primitive.ObjectIDFromHex(id)
+	collection := m.Client.Database(DB_NAME).Collection(USER_COLLECTION)
+	err := collection.FindOne(context.TODO(), bson.M{"_id": objectID}).Decode(&user)
 	return user, err
 }
 
 func (m *mongoDBRepository) Update(user *model.UserModel, id string) (*model.UserModel, error) {
-	sess := m.MongoDBSession.Copy()
-	defer sess.Close()
-
-	c := sess.DB(DB_NAME).C(USER_COLLECTION)
-	err := c.Update(bson.M{"_id": bson.ObjectIdHex(id)}, &user)
-
+	objectID, _ := primitive.ObjectIDFromHex(id)
+	collection := m.Client.Database(DB_NAME).Collection(USER_COLLECTION)
+	_, err := collection.UpdateOne(context.TODO(), bson.M{"_id": objectID}, bson.M{
+		"$set": user,
+	})
 	return user, err
 }
 
 func (m *mongoDBRepository) Delete(id string) error {
-	sess := m.MongoDBSession.Copy()
-	defer sess.Close()
-
-	c := sess.DB(DB_NAME).C(USER_COLLECTION)
-	err := c.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+	objectID, _ := primitive.ObjectIDFromHex(id)
+	collection := m.Client.Database(DB_NAME).Collection(USER_COLLECTION)
+	_, err := collection.DeleteOne(context.TODO(), bson.M{"_id": objectID})
 	return err
 }

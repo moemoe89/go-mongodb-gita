@@ -4,7 +4,7 @@
 
 # PRACTICING-MONGODB-GOLANG #
 
-Practicing MongoDB Using Golang (Gin Gonic Framework) as Programming Language, MongoDB as Database
+Practicing MongoDB Using Golang (Gin Gonic Framework) with Go Mod as Programming Language, MongoDB as Database
 
 ## Directory structure
 Your project directory structure should look like this
@@ -29,6 +29,10 @@ Your project directory structure should look like this
      +-- ... all dependency_library required
 
 ```
+
+## Requirements
+
+Go >= 1.11
 
 ## Setup and Build
 
