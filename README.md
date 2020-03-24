@@ -77,3 +77,21 @@ Stop
 ```
 $ docker-compose down
 ```
+
+## How to Run Unit Test
+Run
+```
+$ go test ./...
+```
+Run with cover
+```
+$ go test ./... -cover
+```
+Run with HTML output
+```
+$ go test ./... -coverprofile=c.out && go tool cover -html=c.out
+```
+
+## License
+
+MIT

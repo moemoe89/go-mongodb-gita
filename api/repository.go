@@ -34,7 +34,7 @@ type mongoDBRepository struct {
 	Client *mongo.Client
 }
 
-// NewRedisRepository will create an object that represent the Repository interface
+// NewMongoDBRepository will create an object that represent the Repository interface
 func NewMongoDBRepository(Client *mongo.Client) Repository {
 	return &mongoDBRepository{Client}
 }

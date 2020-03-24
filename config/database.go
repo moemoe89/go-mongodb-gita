@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// InitDB will create a variable that represent the redis.Client
+// InitDB will create a variable that represent the mongo.Client
 func InitDB() (*mongo.Client, error) {
 	ctx := context.Background()
 	clientOpts := options.Client().ApplyURI(Configuration.MongoDB.Addr)
