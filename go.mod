@@ -1,4 +1,4 @@
-module github.com/moemoe89/practicing-mongodb-golang
+module github.com/moemoe89/go-mongodb-gita
 
 go 1.13
 

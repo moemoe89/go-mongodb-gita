@@ -50,7 +50,7 @@ inuit_rsa.pub
 *.iml
 
 # binary
-practicing-mongodb-golang
+go-mongodb-gita
 app
 
 # out

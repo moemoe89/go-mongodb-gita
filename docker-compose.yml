@@ -3,8 +3,8 @@ services:
   app:
     build: .
     volumes:
-      - .:/go/src/github.com/moemoe89/practicing-mongodb-golang
-    container_name: practice_mongodb_app
+      - .:/go/src/github.com/moemoe89/go-mongodb-gita
+    container_name: go_mongodb_gita
     restart: always
     ports:
       - "8786:8786"

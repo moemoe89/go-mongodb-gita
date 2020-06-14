@@ -7,9 +7,9 @@
 package main
 
 import (
-	ap "github.com/moemoe89/practicing-mongodb-golang/api"
-	conf "github.com/moemoe89/practicing-mongodb-golang/config"
-	"github.com/moemoe89/practicing-mongodb-golang/routers"
+	ap "github.com/moemoe89/go-mongodb-gita/api"
+	conf "github.com/moemoe89/go-mongodb-gita/config"
+	"github.com/moemoe89/go-mongodb-gita/routers"
 
 	"fmt"
 

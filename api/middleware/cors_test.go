@@ -7,8 +7,8 @@
 package middleware_test
 
 import (
-	"github.com/moemoe89/practicing-mongodb-golang/config"
-	"github.com/moemoe89/practicing-mongodb-golang/routers"
+	"github.com/moemoe89/go-mongodb-gita/config"
+	"github.com/moemoe89/go-mongodb-gita/routers"
 
 	"net/http"
 	"net/http/httptest"

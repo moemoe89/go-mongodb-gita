@@ -7,9 +7,9 @@
 package routers
 
 import (
-	ap "github.com/moemoe89/practicing-mongodb-golang/api"
-	h "github.com/moemoe89/practicing-mongodb-golang/api/delivery/http"
-	mw "github.com/moemoe89/practicing-mongodb-golang/api/middleware"
+	ap "github.com/moemoe89/go-mongodb-gita/api"
+	h "github.com/moemoe89/go-mongodb-gita/api/delivery/http"
+	mw "github.com/moemoe89/go-mongodb-gita/api/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

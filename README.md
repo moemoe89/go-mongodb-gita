@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/moemoe89/practicing-mongodb-golang.svg?branch=master)](https://travis-ci.org/moemoe89/practicing-mongodb-golang)
-[![Coverage Status](https://coveralls.io/repos/github/moemoe89/practicing-mongodb-golang/badge.svg?branch=master)](https://coveralls.io/github/moemoe89/practicing-mongodb-golang?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/moemoe89/practicing-mongodb-golang)](https://goreportcard.com/report/github.com/moemoe89/practicing-mongodb-golang)
+[![Build Status](https://travis-ci.org/moemoe89/go-mongodb-gita.svg?branch=master)](https://travis-ci.org/moemoe89/go-mongodb-gita)
+[![Coverage Status](https://coveralls.io/repos/github/moemoe89/go-mongodb-gita/badge.svg?branch=master)](https://coveralls.io/github/moemoe89/go-mongodb-gita?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/moemoe89/go-mongodb-gita)](https://goreportcard.com/report/github.com/moemoe89/go-mongodb-gita)
 
-# PRACTICING-MONGODB-GOLANG #
+# GO-MONGODB-GITA #
 
 Practicing MongoDB Using Golang (Gin Gonic Framework) with Go Mod as Programming Language, MongoDB as Database
 
@@ -13,7 +13,7 @@ Your project directory structure should look like this
   |
   +--+ src/github.com/moemoe89
   |  |
-  |  +--+ practicing-mongodb-golang/
+  |  +--+ go-mongodb-gita/
   |     |
   |     +--+ main.go
   |        + api/
@@ -43,7 +43,7 @@ Go >= 1.11
 $ mkdir -p src/github.com/moemoe89
 $ cd src/github.com/moemoe89
 $ git clone <url>
-$ mv <cloned directory> practicing-mongodb-golang
+$ mv <cloned directory> go-mongodb-gita
 ```
 
 ## Running Application

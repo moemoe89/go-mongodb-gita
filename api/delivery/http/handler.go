@@ -7,10 +7,10 @@
 package http
 
 import (
-	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/form"
-	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/model"
-	ap "github.com/moemoe89/practicing-mongodb-golang/api"
-	cons "github.com/moemoe89/practicing-mongodb-golang/constant"
+	"github.com/moemoe89/go-mongodb-gita/api/api_struct/form"
+	"github.com/moemoe89/go-mongodb-gita/api/api_struct/model"
+	ap "github.com/moemoe89/go-mongodb-gita/api"
+	cons "github.com/moemoe89/go-mongodb-gita/constant"
 
 	"net/http"
 

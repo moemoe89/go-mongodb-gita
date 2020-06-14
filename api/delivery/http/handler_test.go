@@ -7,11 +7,11 @@
 package http_test
 
 import (
-	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/form"
-	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/model"
-	"github.com/moemoe89/practicing-mongodb-golang/api/mocks"
-	"github.com/moemoe89/practicing-mongodb-golang/config"
-	"github.com/moemoe89/practicing-mongodb-golang/routers"
+	"github.com/moemoe89/go-mongodb-gita/api/api_struct/form"
+	"github.com/moemoe89/go-mongodb-gita/api/api_struct/model"
+	"github.com/moemoe89/go-mongodb-gita/api/mocks"
+	"github.com/moemoe89/go-mongodb-gita/config"
+	"github.com/moemoe89/go-mongodb-gita/routers"
 
 	"encoding/json"
 	"errors"

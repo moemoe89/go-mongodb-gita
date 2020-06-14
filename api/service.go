@@ -7,8 +7,8 @@
 package api
 
 import (
-	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/form"
-	"github.com/moemoe89/practicing-mongodb-golang/api/api_struct/model"
+	"github.com/moemoe89/go-mongodb-gita/api/api_struct/form"
+	"github.com/moemoe89/go-mongodb-gita/api/api_struct/model"
 
 	"errors"
 	"net/http"
