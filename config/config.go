@@ -17,19 +17,14 @@ import (
 
 // ConfigurationModel represent the configuration model
 type ConfigurationModel struct {
-	Port  string `json:"port"`
+	Port    string `json:"port"`
 	MongoDB struct {
 		Addr     string `json:"addr"`
 		Database string `json:"database"`
 	} `json:"mongo_db"`
 }
 
-var (
-	// Configuration represent the variable of configuration model
-	Configuration = &ConfigurationModel{}
-)
-
-func init() {
+func InitConfig() (*ConfigurationModel, error) {
 	_, b, _, _ := runtime.Caller(0)
 	basepath := filepath.Dir(b)
 
@@ -37,11 +32,14 @@ func init() {
 	file := basepath + "config.json"
 	raw, err := ioutil.ReadFile(file)
 	if err != nil {
-		panic(fmt.Sprintf("Failed to load auth configuration file: %s", err.Error()))
+		return nil, fmt.Errorf("Failed to load auth configuration file: %s", err.Error())
 	}
 
-	err = json.Unmarshal(raw, Configuration)
+	var configuration *ConfigurationModel
+	err = json.Unmarshal(raw, configuration)
 	if err != nil {
-		panic(fmt.Sprintf("Failed to parse auth configuration file: %s", err.Error()))
+		return nil, fmt.Errorf("Failed to parse auth configuration file: %s", err.Error())
 	}
+
+	return configuration, nil
 }

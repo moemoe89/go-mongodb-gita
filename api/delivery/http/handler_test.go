@@ -9,10 +9,11 @@ package http_test
 import (
 	"github.com/moemoe89/go-mongodb-gita/api/api_struct/form"
 	"github.com/moemoe89/go-mongodb-gita/api/api_struct/model"
-	"github.com/moemoe89/go-mongodb-gita/api/mocks"
+	"github.com/moemoe89/go-mongodb-gita/api/service/mocks"
 	"github.com/moemoe89/go-mongodb-gita/config"
 	"github.com/moemoe89/go-mongodb-gita/routers"
 
+	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -23,6 +24,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+func TestPingRoute(t *testing.T) {
+	log := config.InitLog()
+
+	router := routers.GetRouter(log, nil)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/ping", nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+}
 
 func TestDeliveryCreate(t *testing.T) {
 	log := config.InitLog()
@@ -37,7 +50,7 @@ func TestDeliveryCreate(t *testing.T) {
 	assert.NoError(t, err)
 
 	mockService := new(mocks.Service)
-	mockService.On("Create", userForm).Return(nil, 0, nil)
+	mockService.On("UserCreate", context.TODO(), userForm).Return(nil, 0, nil)
 
 	router := routers.GetRouter(log, mockService)
 
@@ -64,7 +77,7 @@ func TestDeliveryCreateFail(t *testing.T) {
 	assert.NoError(t, err)
 
 	mockService := new(mocks.Service)
-	mockService.On("Create", userForm).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("UserCreate", context.TODO(), userForm).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
 
 	router := routers.GetRouter(log, mockService)
 
@@ -142,8 +155,8 @@ func TestDeliveryUpdate(t *testing.T) {
 	assert.NoError(t, err)
 
 	mockService := new(mocks.Service)
-	mockService.On("FindByID", id.Hex()).Return(user, 0, nil)
-	mockService.On("Update", userForm, id.Hex()).Return(user, 0, nil)
+	mockService.On("UserFindByID", context.TODO(), id.Hex()).Return(user, 0, nil)
+	mockService.On("UserUpdate", context.TODO(), userForm, id.Hex()).Return(user, 0, nil)
 
 	router := routers.GetRouter(log, mockService)
 
@@ -178,8 +191,8 @@ func TestDeliveryUpdateFail(t *testing.T) {
 	assert.NoError(t, err)
 
 	mockService := new(mocks.Service)
-	mockService.On("FindByID", id.String()).Return(user, 0, nil)
-	mockService.On("Update", userForm, id.String()).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("UserFindByID", context.TODO(), id.String()).Return(user, 0, nil)
+	mockService.On("UserUpdate", context.TODO(), userForm, id.String()).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
 
 	router := routers.GetRouter(log, mockService)
 
@@ -208,7 +221,7 @@ func TestDeliveryUpdateFailFindByID(t *testing.T) {
 	assert.NoError(t, err)
 
 	mockService := new(mocks.Service)
-	mockService.On("FindByID", id).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("UserFindByID", context.TODO(), id).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
 
 	router := routers.GetRouter(log, mockService)
 
@@ -282,7 +295,7 @@ func TestDeliveryFind(t *testing.T) {
 	users = append(users, user)
 
 	mockService := new(mocks.Service)
-	mockService.On("Find").Return(users, 0, nil)
+	mockService.On("UserFind", context.TODO()).Return(users, 0, nil)
 
 	router := routers.GetRouter(log, mockService)
 
@@ -298,7 +311,7 @@ func TestDeliveryFindFail(t *testing.T) {
 	log := config.InitLog()
 
 	mockService := new(mocks.Service)
-	mockService.On("Find").Return(nil, http.StatusInternalServerError, errors.New("Oops! Something went wrong. Please try again later"))
+	mockService.On("UserFind", context.TODO()).Return(nil, http.StatusInternalServerError, errors.New("Oops! Something went wrong. Please try again later"))
 
 	router := routers.GetRouter(log, mockService)
 
@@ -323,7 +336,7 @@ func TestDeliveryFindByID(t *testing.T) {
 	}
 
 	mockService := new(mocks.Service)
-	mockService.On("FindByID", id.String()).Return(user, 0, nil)
+	mockService.On("UserFindByID", context.TODO(), id.String()).Return(user, 0, nil)
 
 	router := routers.GetRouter(log, mockService)
 
@@ -340,7 +353,7 @@ func TestDeliveryFindByIDFail(t *testing.T) {
 
 	log := config.InitLog()
 	mockService := new(mocks.Service)
-	mockService.On("FindByID", id).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("UserFindByID", context.TODO(), id).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
 
 	router := routers.GetRouter(log, mockService)
 
@@ -356,7 +369,7 @@ func TestDeliveryDelete(t *testing.T) {
 
 	log := config.InitLog()
 	mockService := new(mocks.Service)
-	mockService.On("Delete", id).Return(0, nil)
+	mockService.On("UserDelete", context.TODO(), id).Return(0, nil)
 
 	router := routers.GetRouter(log, mockService)
 
@@ -372,7 +385,7 @@ func TestDeliveryDeleteFail(t *testing.T) {
 
 	log := config.InitLog()
 	mockService := new(mocks.Service)
-	mockService.On("Delete", id).Return(http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("UserDelete", context.TODO(), id).Return(http.StatusInternalServerError, errors.New("Unexpected database error"))
 
 	router := routers.GetRouter(log, mockService)
 

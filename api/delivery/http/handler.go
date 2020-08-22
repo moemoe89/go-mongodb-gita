@@ -9,10 +9,12 @@ package http
 import (
 	"github.com/moemoe89/go-mongodb-gita/api/api_struct/form"
 	"github.com/moemoe89/go-mongodb-gita/api/api_struct/model"
-	ap "github.com/moemoe89/go-mongodb-gita/api"
+	"github.com/moemoe89/go-mongodb-gita/api/service"
 	cons "github.com/moemoe89/go-mongodb-gita/constant"
 
+	"context"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -21,15 +23,34 @@ import (
 // ctrl struct represent the delivery for controller
 type ctrl struct {
 	log *logrus.Entry
-	svc ap.Service
+	svc service.Service
 }
 
 // NewCtrl will create an object that represent the ctrl struct
-func NewCtrl(log *logrus.Entry, svc ap.Service) *ctrl {
+func NewCtrl(log *logrus.Entry, svc service.Service) *ctrl {
 	return &ctrl{log, svc}
 }
 
-func (ct *ctrl) Create(c *gin.Context) {
+var starTime = time.Now()
+
+// Ping will handle the ping endpoint
+func (ct *ctrl) Ping(c *gin.Context) {
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	startTime := starTime.In(loc)
+
+	res := map[string]string{
+		"start_time": startTime.Format("[02 January 2006] 15:04:05 MST"),
+	}
+	c.JSON(http.StatusOK, res)
+}
+
+// UserCreate will handle the create user endpoint
+func (ct *ctrl) UserCreate(c *gin.Context) {
+	ctx := c.Request.Context()
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
 	req := &form.UserForm{}
 	if err := c.BindJSON(&req); err != nil {
 		ct.log.Errorf("can't get json body: %s", err.Error())
@@ -43,7 +64,7 @@ func (ct *ctrl) Create(c *gin.Context) {
 		return
 	}
 
-	user, status, err := ct.svc.Create(req)
+	user, status, err := ct.svc.UserCreate(ctx, req)
 	if err != nil {
 		c.JSON(status, model.NewGenericResponse(status, cons.ERR, []string{err.Error()}, nil))
 		return
@@ -52,8 +73,14 @@ func (ct *ctrl) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, model.NewGenericResponse(http.StatusCreated, cons.OK, []string{"Data has been saved"}, user))
 }
 
-func (ct *ctrl) Find(c *gin.Context) {
-	users, status, err := ct.svc.Find()
+// UserFind will handle the find user endpoint
+func (ct *ctrl) UserFind(c *gin.Context) {
+	ctx := c.Request.Context()
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
+	users, status, err := ct.svc.UserFind(ctx)
 	if err != nil {
 		c.JSON(status, model.NewGenericResponse(status, cons.ERR, []string{err.Error()}, nil))
 		return
@@ -62,10 +89,16 @@ func (ct *ctrl) Find(c *gin.Context) {
 	c.JSON(http.StatusOK, model.NewGenericResponse(http.StatusOK, cons.OK, []string{"Data has been retrieved"}, users))
 }
 
-func (ct *ctrl) FindByID(c *gin.Context) {
+// UserFindByID will handle the find user by id endpoint
+func (ct *ctrl) UserFindByID(c *gin.Context) {
+	ctx := c.Request.Context()
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
 	id := c.Param("id")
 
-	user, status, err := ct.svc.FindByID(id)
+	user, status, err := ct.svc.UserFindByID(ctx, id)
 	if err != nil {
 		c.JSON(status, model.NewGenericResponse(status, cons.ERR, []string{err.Error()}, nil))
 		return
@@ -74,7 +107,13 @@ func (ct *ctrl) FindByID(c *gin.Context) {
 	c.JSON(http.StatusOK, model.NewGenericResponse(http.StatusOK, cons.OK, []string{"Data has been retrieved"}, user))
 }
 
-func (ct *ctrl) Update(c *gin.Context) {
+// UserUpdate will handle the update user endpoint
+func (ct *ctrl) UserUpdate(c *gin.Context) {
+	ctx := c.Request.Context()
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
 	id := c.Param("id")
 
 	req := &form.UserForm{}
@@ -90,13 +129,13 @@ func (ct *ctrl) Update(c *gin.Context) {
 		return
 	}
 
-	user, status, err := ct.svc.FindByID(id)
+	user, status, err := ct.svc.UserFindByID(ctx, id)
 	if err != nil {
 		c.JSON(status, model.NewGenericResponse(status, cons.ERR, []string{err.Error()}, nil))
 		return
 	}
 
-	user, status, err = ct.svc.Update(req, id)
+	user, status, err = ct.svc.UserUpdate(ctx, req, id)
 	if err != nil {
 		c.JSON(status, model.NewGenericResponse(status, cons.ERR, []string{err.Error()}, nil))
 		return
@@ -105,10 +144,16 @@ func (ct *ctrl) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, model.NewGenericResponse(http.StatusOK, cons.OK, []string{"Data has been updated"}, user))
 }
 
-func (ct *ctrl) Delete(c *gin.Context) {
+// UserDelete will handle the delete user endpoint
+func (ct *ctrl) UserDelete(c *gin.Context) {
+	ctx := c.Request.Context()
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
 	id := c.Param("id")
 
-	status, err := ct.svc.Delete(id)
+	status, err := ct.svc.UserDelete(ctx, id)
 	if err != nil {
 		c.JSON(status, model.NewGenericResponse(status, cons.ERR, []string{err.Error()}, nil))
 		return

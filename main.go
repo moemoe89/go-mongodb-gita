@@ -7,29 +7,36 @@
 package main
 
 import (
-	ap "github.com/moemoe89/go-mongodb-gita/api"
+	"github.com/moemoe89/go-mongodb-gita/api/repository/mongo"
+	"github.com/moemoe89/go-mongodb-gita/api/service"
 	conf "github.com/moemoe89/go-mongodb-gita/config"
 	"github.com/moemoe89/go-mongodb-gita/routers"
 
 	"fmt"
+	"log"
 
 	"github.com/DeanThompson/ginpprof"
 )
 
 func main() {
-	client, err := conf.InitDB()
+	config, err := conf.InitConfig()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	log := conf.InitLog()
+	client, err := conf.InitDB(config)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	repo := ap.NewMongoDBRepository(client)
-	svc := ap.NewService(log, repo)
+	logging := conf.InitLog()
 
-	app := routers.GetRouter(log, svc)
+	mongoRepo := mongo.NewMongoRepository(client, config.MongoDB.Database)
+	svc := service.NewService(logging, mongoRepo)
+
+	app := routers.GetRouter(logging, svc)
 	ginpprof.Wrap(app)
-	err = app.Run(":" + conf.Configuration.Port)
+	err = app.Run(":" + config.Port)
 	if err != nil {
 		panic(fmt.Sprintf("Can't start the app: %s", err.Error()))
 	}

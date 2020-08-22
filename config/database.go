@@ -15,9 +15,9 @@ import (
 )
 
 // InitDB will create a variable that represent the mongo.Client
-func InitDB() (*mongo.Client, error) {
+func InitDB(config *ConfigurationModel) (*mongo.Client, error) {
 	ctx := context.Background()
-	clientOpts := options.Client().ApplyURI(Configuration.MongoDB.Addr)
+	clientOpts := options.Client().ApplyURI(config.MongoDB.Addr)
 	client, err := mongo.Connect(ctx, clientOpts)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to ping connection to mongoDB: %s", err.Error())

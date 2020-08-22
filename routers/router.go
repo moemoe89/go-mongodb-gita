@@ -7,29 +7,28 @@
 package routers
 
 import (
-	ap "github.com/moemoe89/go-mongodb-gita/api"
 	h "github.com/moemoe89/go-mongodb-gita/api/delivery/http"
 	mw "github.com/moemoe89/go-mongodb-gita/api/middleware"
+	"github.com/moemoe89/go-mongodb-gita/api/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
 
 // GetRouter will create a variable that represent the gin.Engine
-func GetRouter(log *logrus.Entry, svc ap.Service) *gin.Engine {
+func GetRouter(log *logrus.Entry, svc service.Service) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery())
 	r.Use(mw.CORS)
-	r.GET("/", ap.Ping)
-	r.GET("/ping", ap.Ping)
 
 	ctrl := h.NewCtrl(log, svc)
-
-	r.POST("/user", ctrl.Create)
-	r.GET("/user", ctrl.Find)
-	r.GET("/user/:id", ctrl.FindByID)
-	r.PUT("/user/:id", ctrl.Update)
-	r.DELETE("/user/:id", ctrl.Delete)
+	r.GET("/", ctrl.Ping)
+	r.GET("/ping", ctrl.Ping)
+	r.POST("/user", ctrl.UserCreate)
+	r.GET("/user", ctrl.UserFind)
+	r.GET("/user/:id", ctrl.UserFindByID)
+	r.PUT("/user/:id", ctrl.UserUpdate)
+	r.DELETE("/user/:id", ctrl.UserDelete)
 
 	return r
 }

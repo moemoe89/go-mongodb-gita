@@ -15,7 +15,7 @@ services:
       - fullstack
   mongodb:
     image: mongo:latest
-    container_name: practice_mongodb_db
+    container_name: db_mongodb
     environment:
       MONGO_INITDB_DATABASE: practice_mongodb
     restart: always
